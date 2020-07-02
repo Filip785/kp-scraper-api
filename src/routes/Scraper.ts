@@ -16,7 +16,7 @@ router.get('/gpu', async (req: Request, res: Response) => {
   xlsx.writeFile(wb, __dirname + '/../public/workbooks/result.xlsx');
 
   return res.json({
-    downloadUrl: 'http://localhost:5000/workbooks/result.xlsx'
+    downloadUrl: 'https://ancient-gorge-59721.herokuapp.com/workbooks/result.xlsx'
   }).status(200);
 });
 
