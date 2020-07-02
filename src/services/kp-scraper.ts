@@ -49,5 +49,3 @@ export default async function parseData(wb: WorkBook, numOfPages: number, minPri
     xlsx.utils.book_append_sheet(wb, ws, wsName);
   }
 }
-
-module.exports = { parseData };
