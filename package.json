@@ -2,7 +2,7 @@
   "name": "kp-scraper-api",
   "version": "0.0.0",
   "scripts": {
-    "build": "set API_DOMAIN=https://ancient-gorge-59721.herokuapp.com/&& node build.js",
+    "build": "node build.js",
     "lint": "tslint --project \"tsconfig.json\"",
     "start": "node -r module-alias/register ./dist --env=production",
     "start:dev": "set PORT=5000 && set API_DOMAIN=http://localhost:5000/&& nodemon",
