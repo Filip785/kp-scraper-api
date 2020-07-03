@@ -17,6 +17,7 @@ router.get('/gpu', async (req: Request, res: Response) => {
 
   return res.json({
     downloadUrl: 'https://ancient-gorge-59721.herokuapp.com/workbooks/result.xlsx'
+    //downloadUrl: 'http://localhost:5000/workbooks/result.xlsx'
   }).status(200);
 });
 
