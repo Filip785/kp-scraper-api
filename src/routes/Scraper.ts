@@ -1,39 +1,28 @@
 import { Request, Response, Router } from 'express';
 import xlsx from 'xlsx';
 import parseData from '../services/kp-scraper';
-import shortid from 'shortid';
-import { format } from 'date-fns';
-import fs from 'fs';
+import generateDateTime from '../shared/datetime-generator';
+import getFileSize from '../shared/filesize-helper';
+import getFilePathAndName from '../shared/filepath-helper';
 
-function getFileSize(filePath: string) {
-  const stats = fs.statSync(filePath);
-  
-  const { size } = stats;
-
-  // convert to human readable format.
-  const i = Math.floor(Math.log(size) / Math.log(1024));
-  const calc = Number((size / Math.pow(1024, i)).toFixed(2));
-  return calc + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
-}
-
-// Init shared
 const router = Router();
 
-router.get('/gpu', async (req: Request, res: Response) => {
+router.get('/get-part-data', async (req: Request, res: Response) => {
+  const partType = req.query.partType as string;
   const numOfPages = Number(req.query.numOfPages);
   const minPrice = Number(req.query.minPrice);
   const maxPrice = Number(req.query.maxPrice);
+  const searchTerms = req.query.searchTerms as string[];
 
   const wb = xlsx.utils.book_new();
-  await parseData(wb, numOfPages, minPrice, maxPrice);
-  const fileName = `result-gpu-${shortid.generate()}.xlsx`;
-  const filePath = __dirname + `/../public/workbooks/${fileName}`;
+
+  await parseData(wb, numOfPages, minPrice, maxPrice, searchTerms);
+
+  const { fileName, filePath } = getFilePathAndName(partType);
+
   xlsx.writeFile(wb, filePath);
-
-  const dateTimeCreated = new Date();
-
-  const timeCreated = format(dateTimeCreated, 'hh:mm:ss a');
-  const dateCreated = format(dateTimeCreated, 'dd.MM.yyyy');
+  
+  const { dateCreated, timeCreated } = generateDateTime();
   const fileSize = getFileSize(filePath);
 
   return res.json({

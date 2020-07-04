@@ -2,7 +2,7 @@ import xlsx, { WorkBook } from 'xlsx';
 import fetch from 'node-fetch';
 import { parse } from 'node-html-parser';
 
-export default async function parseData(wb: WorkBook, numOfPages: number, minPrice: number, maxPrice: number) {
+export default async function parseData(wb: WorkBook, numOfPages: number, minPrice: number, maxPrice: number, searchTerms: Array<string>) {
   for (let x = 1; x <= numOfPages; x++) {
     const wsName = `KP Stranica ${x}`;
     const wsData = [
@@ -21,7 +21,7 @@ export default async function parseData(wb: WorkBook, numOfPages: number, minPri
     for (let y = 0; y < length; y++) {
       const nameItem = namesForPage[y].text.trim();
       
-      if(!nameItem.includes('580') && !nameItem.includes('590')) {
+      if(!searchTerms.some(subString => nameItem.includes(subString))) {
         continue;
       }
 
