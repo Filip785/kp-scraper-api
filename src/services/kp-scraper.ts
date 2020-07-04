@@ -2,14 +2,27 @@ import xlsx, { WorkBook } from 'xlsx';
 import fetch from 'node-fetch';
 import { parse } from 'node-html-parser';
 
-export default async function parseData(wb: WorkBook, numOfPages: number, minPrice: number, maxPrice: number, searchTerms: Array<string>) {
+export default async function parseData(wb: WorkBook, partType: string, numOfPages: number, minPrice: number, maxPrice: number, searchTerms: Array<string>) {
+  let searchString = 'https://www.kupujemprodajem.com/kompjuteri-desktop/graficke-kartice/grupa/10/102/';
+
+  switch (partType) {
+    case 'cpu':
+      searchString = 'https://www.kupujemprodajem.com/kompjuteri-desktop/procesori/grupa/10/94/';
+      break;
+    case 'ssd':
+      searchString = 'https://www.kupujemprodajem.com/kompjuteri-desktop/hard-diskovi-ssd/grupa/10/1350/';
+      break;
+  }
+
   for (let x = 1; x <= numOfPages; x++) {
     const wsName = `KP Stranica ${x}`;
     const wsData = [
       ['Ime', 'Cena', 'Link']
     ];
+
+    
   
-    const result = await fetch(`https://www.kupujemprodajem.com/Kompjuteri-Desktop/Graficke-kartice/10-102-${x}-grupa.htm`);
+    const result = await fetch(`${searchString}${x}`);
     const html = await result.text();
   
     const root = parse(html);

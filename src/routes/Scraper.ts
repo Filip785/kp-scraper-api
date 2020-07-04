@@ -16,7 +16,7 @@ router.get('/get-part-data', async (req: Request, res: Response) => {
 
   const wb = xlsx.utils.book_new();
 
-  await parseData(wb, numOfPages, minPrice, maxPrice, searchTerms);
+  await parseData(wb, partType, numOfPages, minPrice, maxPrice, searchTerms);
 
   const { fileName, filePath } = getFilePathAndName(partType);
 
