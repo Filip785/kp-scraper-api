@@ -1,10 +1,8 @@
-import shortid from 'shortid';
-
-export default function getFilePathAndName(type: string) {
-  const fileName = `result-${type}-${shortid.generate()}.xlsx`;
+export default function getFilePathAndName(type: string, fileId: string) {
+  const fileName = `result-${type}-${fileId}.xlsx`;
   
   return {
     fileName,
     filePath: __dirname + `/../public/workbooks/${fileName}`
-  }
+  };
 }

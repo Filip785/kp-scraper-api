@@ -1,9 +1,6 @@
 import { Request, Response, Router } from 'express';
-import xlsx from 'xlsx';
-import parseData from '../services/kp-scraper';
+import parseData from '../services/scraping-service';
 import generateDateTime from '../shared/datetime-generator';
-import getFileSize from '../shared/filesize-helper';
-import getFilePathAndName from '../shared/filepath-helper';
 
 const router = Router();
 
@@ -14,16 +11,9 @@ router.get('/get-part-data', async (req: Request, res: Response) => {
   const maxPrice = Number(req.query.maxPrice);
   const searchTerms = req.query.searchTerms as string[];
 
-  const wb = xlsx.utils.book_new();
-
-  const adCount = await parseData(wb, partType, numOfPages, minPrice, maxPrice, searchTerms);
-
-  const { fileName, filePath } = getFilePathAndName(partType);
-
-  xlsx.writeFile(wb, filePath);
+  const { adCount, fileName, fileSize } = await parseData(partType, numOfPages, minPrice, maxPrice, searchTerms);
   
   const { dateCreated, timeCreated } = generateDateTime();
-  const fileSize = getFileSize(filePath);
 
   return res.json({
     fileName,

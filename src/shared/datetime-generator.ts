@@ -6,5 +6,5 @@ export default function generateDateTime() {
   return {
     timeCreated: format(dateTimeCreated, 'hh:mm:ss a'),
     dateCreated: format(dateTimeCreated, 'dd.MM.yyyy')
-  }
+  };
 }
